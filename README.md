@@ -3,6 +3,13 @@ ui-grid
 
 An AngularJS grid.
 
+# Setup
+
+* Install Lineman globaly `sudo npm install -g lineman`.
+* Install the dependencies `npm install`.
+* To run the dev grunt tasks `lineman run`.
+* With grunt running, `lineman spec` to start test'em (unit tests) and `lineman grunt spec-e2e` to run `Protractor` (e2e testing).
+
 # Requirements
 
 ## Development
