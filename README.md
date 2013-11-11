@@ -25,5 +25,12 @@ An AngularJS grid.
 
 * **Base Functionality**
   * Sorting, paging, grouping, inline editing, column reordering, templating, row selection, virtualization, and filtering.
+  * 
+* **Extended Functionality**
+ * Freeze columns / Pinning
+ * Child Grids
+ * Grouping Summaries (part of grouping?)
+
+
 * **Goals**
  * The grid should render semantic HTML and be easy to style by providing hooks where appropriate.
