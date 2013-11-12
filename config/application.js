@@ -25,12 +25,12 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
   prependTasks: {
     dist: ["ngmin"],         // ngmin should run in dist only
     // common: ["ngtemplates"], // ngtemplates runs in dist and dev
-    dist: ["concat:dist"]
+    dist: ["concat:jsdist", "concat:lessdist"]
   },
 
   // swaps concat_sourcemap in place of vanilla concat
   appendTasks: {
-    common: ["concat_sourcemap:js", "concat_sourcemap:spec", "concat_sourcemap:css", "concat_sourcemap:vendor"]
+    common: ["concat_sourcemap:js", "concat_sourcemap:spec", "concat_sourcemap:vendor"]
   },
 
   // configuration for grunt-angular-templates
@@ -68,10 +68,10 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
       src: ["<%= files.js.specHelpers %>", "<%= files.coffee.generatedSpecHelpers %>", "<%= files.js.spec %>", "<%= files.coffee.generatedSpec %>"],
       dest: "<%= files.js.concatenatedSpec %>"
     },
-    css: {
-      src: ["<%= files.less.generatedVendor %>", "<%= files.sass.generatedVendor %>", "<%= files.css.vendor %>", "<%= files.less.generatedApp %>", "<%= files.sass.generatedApp %>", "<%= files.css.app %>"],
-      dest: "<%= files.css.concatenated %>"
-    },
+    // css: {
+    //   src: ["<%= files.less.generatedVendor %>", "<%= files.sass.generatedVendor %>", "<%= files.css.vendor %>", "<%= files.less.generatedApp %>", "<%= files.sass.generatedApp %>", "<%= files.css.app %>"],
+    //   dest: "<%= files.css.concatenated %>"
+    // },
     vendor: {
       src: ["<%= files.js.vendor %>"],
       dest: "<%= files.js.vendorCurrent %>"
@@ -80,9 +80,13 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
 
   // Only for dist, we don't need source map
   concat: {
-    dist: {
+    jsdist: {
       src: ["<%= files.js.app %>", "<%= files.coffee.generated %>"],
       dest: "<%= files.js.uncompressed %>"
+    },
+    lessdist: {
+      src: ["<%= files.less.app %>"],
+      dest: "<%= files.less.dist %>"
     }
   },
 
@@ -98,10 +102,10 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
   // and recompile angular templates, also swaps lineman default
   // watch target concat with concat_sourcemap
   watch: {
-    ngtemplates: {
-      files: "app/templates/**/*.html",
-      tasks: ["ngtemplates", "concat_sourcemap:js"]
-    },
+    // ngtemplates: {
+    //   files: "app/templates/**/*.html",
+    //   tasks: ["ngtemplates", "concat_sourcemap:js"]
+    // },
     js: {
       files: ["<%= files.js.vendor %>", "<%= files.js.app %>"],
       tasks: ["concat_sourcemap:js"]
@@ -118,10 +122,10 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
       files: ["<%= files.coffee.specHelpers %>", "<%= files.coffee.spec %>"],
       tasks: ["coffee", "concat_sourcemap:spec"]
     },
-    css: {
-      files: ["<%= files.css.vendor %>", "<%= files.css.app %>"],
-      tasks: ["concat_sourcemap:css"]
-    },
+    // css: {
+    //   files: ["<%= files.css.vendor %>", "<%= files.css.app %>"],
+    //   tasks: ["concat_sourcemap:css"]
+    // },
     less: {
       files: ["<%= files.less.vendor %>", "<%= files.less.app %>"],
       tasks: ["less", "concat_sourcemap:css"]

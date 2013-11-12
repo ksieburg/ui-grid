@@ -22,7 +22,7 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
       "vendor/js/**/*.js"
     ],
     app: [
-      "app/js/**/*.js"
+      "src/js/**/*.js"
     ],
     concatenated: 'generated/js/ui-grid.dev.js',
     minified: 'dist/js/ui-grid.min.js',
@@ -33,8 +33,13 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
   less: {
     compile: {
       options: {
-        paths: ["vendor/css/**/*.css", "app/css/**/*.less"]
+        paths: ["vendor/less/**/*.css", "src/less/**/*.less"]
       }
-    }
+    },
+    app: "src/less/**/*.less",
+    vendor: "vendor/less/**/*.less",
+    generatedApp: "generated/less/ui-grid.css",
+    generatedVendor: "generated/less/vendor.css",
+    dist: "dist/less/ui-grid.css"
   }
 });
