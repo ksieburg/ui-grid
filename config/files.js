@@ -22,9 +22,12 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
       "vendor/js/**/*.js"
     ],
     app: [
-      "app/js/app.js",
       "app/js/**/*.js"
-    ]
+    ],
+    concatenated: 'generated/js/ui-grid.dev.js',
+    minified: 'dist/js/ui-grid.min.js',
+    uncompressed: 'dist/js/ui-grid.js',
+    vendorCurrent: 'generated/js/vendor.js'
   },
 
   less: {

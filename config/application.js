@@ -7,45 +7,43 @@
 
 module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application', {
 
-  // html5push state simulation
-  server: {
-    pushState: true
-  },
-
   // configure lineman to load additional angular related npm tasks
   loadNpmTasks: [
-    "grunt-angular-templates",
+    // "grunt-angular-templates",
     "grunt-concat-sourcemap",
     "grunt-ngmin"
   ],
 
   // we don't use the lineman default concat, handlebars, and jst tasks by default
   removeTasks: {
-    common: ["concat", "handlebars", "jst"]
+    common: ["concat", "handlebars", "jst", "images:dev", "webfonts:dev", "pages:dev"],
+    dev: ["server"],
+    dist: ["images:dist", "webfonts:dist", "pages:dist"]
   },
 
   // task override configuration
   prependTasks: {
     dist: ["ngmin"],         // ngmin should run in dist only
-    common: ["ngtemplates"] // ngtemplates runs in dist and dev
+    // common: ["ngtemplates"], // ngtemplates runs in dist and dev
+    dist: ["concat:dist"]
   },
 
   // swaps concat_sourcemap in place of vanilla concat
   appendTasks: {
-    common: ["concat_sourcemap"]
+    common: ["concat_sourcemap:js", "concat_sourcemap:spec", "concat_sourcemap:css", "concat_sourcemap:vendor"]
   },
 
   // configuration for grunt-angular-templates
-  ngtemplates: {
-    app: { // "app" matches the name of the angular module defined in app.js
-      options: {
-        base: "app/templates"
-      },
-      src: "app/templates/**/*.html",
-      // puts angular templates in a different spot than lineman looks for other templates in order not to conflict with the watch process
-      dest: "generated/angular/template-cache.js"
-    }
-  },
+  // ngtemplates: {
+  //   app: { // "app" matches the name of the angular module defined in app.js
+  //     options: {
+  //       base: "app/templates"
+  //     },
+  //     src: "app/templates/**/*.html",
+  //     // puts angular templates in a different spot than lineman looks for other templates in order not to conflict with the watch process
+  //     dest: "generated/angular/template-cache.js"
+  //   }
+  // },
 
   // configuration for grunt-ngmin, this happens _after_ concat once, which is the ngmin ideal :)
   ngmin: {
@@ -63,7 +61,7 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
       sourcesContent: true
     },
     js: {
-      src: ["<%= files.js.vendor %>", "<%= files.js.app %>", "<%= files.coffee.generated %>", "<%= files.ngtemplates.dest %>"],
+      src: ["<%= files.js.app %>", "<%= files.coffee.generated %>"],
       dest: "<%= files.js.concatenated %>"
     },
     spec: {
@@ -73,6 +71,26 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
     css: {
       src: ["<%= files.less.generatedVendor %>", "<%= files.sass.generatedVendor %>", "<%= files.css.vendor %>", "<%= files.less.generatedApp %>", "<%= files.sass.generatedApp %>", "<%= files.css.app %>"],
       dest: "<%= files.css.concatenated %>"
+    },
+    vendor: {
+      src: ["<%= files.js.vendor %>"],
+      dest: "<%= files.js.vendorCurrent %>"
+    }  
+  },
+
+  // Only for dist, we don't need source map
+  concat: {
+    dist: {
+      src: ["<%= files.js.app %>", "<%= files.coffee.generated %>"],
+      dest: "<%= files.js.uncompressed %>"
+    }
+  },
+
+  uglify: {
+    js: {
+      files: {
+        "<%= files.js.minified %>": "<%= files.js.uncompressed %>"
+      }
     }
   },
 
