@@ -27,7 +27,9 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('files', {
     concatenated: 'generated/js/ui-grid.dev.js',
     minified: 'dist/js/ui-grid.min.js',
     uncompressed: 'dist/js/ui-grid.js',
-    vendorCurrent: 'generated/js/vendor.js'
+    vendorCurrent: 'generated/js/vendor.js',
+    spec: ["spec/**/*.js", "!spec/helpers/**/*.js"],
+    spechelpers: 'generated/js/spec-helpers.js'
   },
 
   less: {

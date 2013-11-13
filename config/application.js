@@ -30,7 +30,7 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
 
   // swaps concat_sourcemap in place of vanilla concat
   appendTasks: {
-    common: ["concat_sourcemap:js", "concat_sourcemap:spec", "concat_sourcemap:vendor"]
+    common: ["concat_sourcemap:js", "concat_sourcemap:spec", "concat_sourcemap:spechelpers", "concat_sourcemap:vendor"]
   },
 
   // configuration for grunt-angular-templates
@@ -65,8 +65,12 @@ module.exports = require(process.env['LINEMAN_MAIN']).config.extend('application
       dest: "<%= files.js.concatenated %>"
     },
     spec: {
-      src: ["<%= files.js.specHelpers %>", "<%= files.coffee.generatedSpecHelpers %>", "<%= files.js.spec %>", "<%= files.coffee.generatedSpec %>"],
+      src: ["<%= files.js.spec %>", "<%= files.coffee.generatedSpec %>"],
       dest: "<%= files.js.concatenatedSpec %>"
+    },
+    spechelpers: {
+      src: ["<%= files.js.specHelpers %>", "<%= files.coffee.generatedSpecHelpers %>"],
+      dest: "<%= files.js.spechelpers.js %>"
     },
     // css: {
     //   src: ["<%= files.less.generatedVendor %>", "<%= files.sass.generatedVendor %>", "<%= files.css.vendor %>", "<%= files.less.generatedApp %>", "<%= files.sass.generatedApp %>", "<%= files.css.app %>"],
